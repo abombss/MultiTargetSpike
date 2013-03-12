@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <version>1.0.0</version>
+    <authors>You</authors>
+    <owners />
+    <id>MultiTarget</id>
+    <title />
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>My package description.</description>
+    <dependencies>
+        <group>
+            <dependency id="NewtonSoft.Json" version="[1.5,2)"/>
+        </group>
+    </dependencies>
+  </metadata>
+    <files>
+        <file src="net45\MultiTargetLib.dll" target="lib\net45\MultiTargetLib.dll"/>
+        <file src="net40\MultiTargetLib.net40.dll" target="lib\net40\MultiTargetLib.dll"/>
+        <file src="net35\MultiTargetLib.net35.dll" target="lib\net35\MultiTargetLib.dll"/>
+    </files>
+</package>

@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Task that will set the current processes environment variable to enable or disable nuget package restore 
+when nuget.exe -is executed with the -requireconsent flag -->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<UsingTask
+  TaskName="EnableNugetPackageRestore"
+  TaskFactory="CodeTaskFactory"
+  AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" >
+    <ParameterGroup>
+        <Enable ParameterType="System.Boolean" Required="true" />
+    </ParameterGroup>
+    <Task>
+        <Code Type="Fragment" Language="cs">
+            <![CDATA[
+                System.Environment.SetEnvironmentVariable("EnableNugetPackageRestore", Enable.ToString().ToLower());
+                ]]>
+        </Code>
+    </Task>
+</UsingTask>
+
+<UsingTask
+  TaskName="WriteAssemblyVersion"
+  TaskFactory="CodeTaskFactory"
+  AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" >
+    <ParameterGroup>
+        <Files ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+        <Versions ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
+    </ParameterGroup>
+    <Task>
+        <Code Type="Fragment" Language="cs">
+            <![CDATA[
+                foreach(var item in Files)
+                {
+                  Log.LogMessage(MessageImportance.High, "Found Item: " + item.ItemSpec);
+                }
+            ]]>
+        </Code>
+    </Task>
+</UsingTask>
+
+    <Target Name="Test">
+        <WriteAssemblyVersion Files="$(MSBuildProjectDirectory)\src\CommonAssemblyInfo.cs">
+            <Output TaskParameter="Versions" ItemName="FileVersions"></Output>
+        </WriteAssemblyVersion>
+        <Message Importance="High" Text="Versions @(FileVersions)"></Message>
+    </Target>
+</Project>

@@ -1,0 +1,39 @@
+﻿<!--?xml version="1.0" encoding="utf-8"?-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="Rebar.Build.targets" Condition="Exists('Rebar.Build.targets')" />
+    
+    <UsingTask
+      TaskName="EnableNugetPackageRestore"
+      TaskFactory="CodeTaskFactory"
+      AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" >
+        <ParameterGroup>
+            <Enable ParameterType="System.Boolean" Required="true" />
+        </ParameterGroup>
+        <Task>
+            <Code Type="Fragment" Language="cs">
+                <![CDATA[
+                System.Environment.SetEnvironmentVariable("EnableNugetPackageRestore", Enable.ToString().ToLower());
+                ]]>
+            </Code>
+        </Task>
+    </UsingTask>
+
+    <Target Name="EnableNugetPackageRestore" BeforeTargets="Clean;Rebuild;Build">
+        <Message Text="EnableNugetPackageRestore '$(EnableNugetPackageRestore)' -> target running" Importance="high">
+        </Message>
+        <EnableNugetPackageRestore Enable="$(EnableNugetPackageRestore)" />
+    </Target>
+
+    <Target Name="WriteAssemblyVersion" BeforeTargets="Build;Rebuild">
+        
+    </Target>
+
+    <Target Name="CreateNugetPackage" AfterTargets="Build;Rebuild" Condition="'$(Platform)'=='Package'">
+        <ItemGroup>
+            <DummyLibrary Include="$(OutDir)\MultiTargetSpike.Package*" />
+        </ItemGroup>
+        <Exec Command="$(SolutionDir).nuget\nuget.exe pack $(OutDir)MultiTarget.1.0.0.nuspec -BasePath $(OutDir)..\ -Verbosity detailed -Version 1.0.0-alpha-1-build-1 -OutputDirectory $(OutDir) -Symbols" />
+        <Delete Files="@(DummyLibrary)" ContinueOnError="true" Condition="Exists('$(OutDir)MultiTargetSpike.Package.dll')"></Delete>
+    </Target>
+
+</Project>

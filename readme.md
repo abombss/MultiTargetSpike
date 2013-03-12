@@ -57,17 +57,13 @@ powershell, batch file, etc, the difficulty will be locating the proper assembli
 renaming them, then packaging them.
 
 Possible solutions:
-
-1. Completely customize the TFS Build Template in a way which I have no idea how to accomplish.
+1) Completely customize the TFS Build Template in a way which I have no idea how to accomplish.
   * This cannot provide repeatability on local workstations
   * This is complicated
   * This is very difficult to test, basically trial and error which is very slow and effecient to develop
-
-2. Do it all with MSBuild
+2) Do it all with MSBuild
   * This would be the easier way
   * Not sure how to integrate straight msbuild with the TFS metrics like coverage, test results, etc
   * Can be repeatable on both the build server and local dev machines
-
-3. Use something super easy like PSake
+3) Use something super easy like PSake
   * This would be the best approach as long as I can get TFS build metric
-
